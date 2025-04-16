@@ -1,0 +1,6 @@
+/vendor/
+.idea/
+.DS_Store
+.env
+.env.local
+.env.test
