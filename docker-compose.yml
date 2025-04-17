@@ -1,0 +1,62 @@
+services:
+  nginx:
+    image: nginx:alpine
+    container_name: nginx_group_chat_app
+    volumes:
+      - ./:/var/www
+      - ./docker/nginx/conf.d/:/etc/nginx/conf.d/
+    ports:
+      - "8080:80"
+    networks:
+      - group_chat_app
+  php_fpm:
+    build:
+      context: docker
+      dockerfile: ./php/Dockerfile
+    container_name: php_fpm_group_chat_app
+    volumes:
+      - ./:/var/www
+    working_dir: /var/www
+    env_file:
+      - .env
+    depends_on:
+      - mysql
+    networks:
+      - group_chat_app
+  mysql:
+    container_name: mysql_group_chat_app
+    image: mysql:8.0.34
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./docker/mysql/my.cnf:/etc/mysql/my.cnf
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    networks:
+      - group_chat_app
+
+###> doctrine/doctrine-bundle ###
+  database:
+    image: postgres:${POSTGRES_VERSION:-16}-alpine
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-app}
+      # You should definitely change the password in production
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-!ChangeMe!}
+      POSTGRES_USER: ${POSTGRES_USER:-app}
+    volumes:
+      - database_data:/var/lib/postgresql/data:rw
+      # You may use a bind-mounted host directory instead, so that it is harder to accidentally remove the volume and lose all your data!
+      # - ./docker/db/data:/var/lib/postgresql/data:rw
+###< doctrine/doctrine-bundle ###
+networks:
+  group_chat_app:
+    driver: bridge
+volumes:
+  db_data:
+###> doctrine/doctrine-bundle ###
+  database_data:
+###< doctrine/doctrine-bundle ###
