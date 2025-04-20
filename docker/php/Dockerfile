@@ -13,7 +13,8 @@ RUN apt-get update && apt-get install -y \
     jpegoptim optipng pngquant gifsicle \
     unzip \
     curl \
-    default-mysql-client
+    libpq-dev \
+    postgresql-client
 
 # Clear the apt cache
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
@@ -22,7 +23,7 @@ RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg
 
 # Install PHP extensions
-RUN docker-php-ext-install pdo pdo_mysql mbstring zip exif pcntl gd
+RUN docker-php-ext-install pdo pdo_pgsql mbstring zip exif pcntl gd
 
 # Install Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
