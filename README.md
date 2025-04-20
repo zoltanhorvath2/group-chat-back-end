@@ -5,8 +5,9 @@
 3. run git clone `git@github.com:zoltanhorvath2/group-chat-back-end.git`
 4. cd group-chat-back-end
 5. copy the content of `.env.example` to a new file called `.env`
-6. run `docker compose up`
-7. enter the php runtime container with `docker exec -ti php_fpm_group_chat_app bash`
-8. run `composer install`
-9. run `php bin/console key:generate`
-10. You should see some test data returned in the response of http://localhost:8080/api/test
+6. uncomment the DATABASE_URL line in the .env file for PostgreSQL, set up the user and password for your database and enter `group_chat_app` as the database name
+7. run `docker compose up`
+8. enter the php runtime container with `docker exec -ti php_fpm_group_chat_app bash`
+9. run `composer install`
+10. run `php bin/console secrets:generate-key` for generating an application secret key
+11. You should see some test data returned in the response of http://localhost:8080/api/test
