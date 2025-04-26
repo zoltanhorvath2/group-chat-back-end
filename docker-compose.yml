@@ -6,7 +6,7 @@ services:
       - ./:/var/www
       - ./docker/nginx/conf.d/:/etc/nginx/conf.d/
     ports:
-      - "8080:80"
+      - "80:80"
     networks:
       - group_chat_app
   php_fpm:

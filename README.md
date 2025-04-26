@@ -10,4 +10,6 @@
 8. enter the php runtime container with `docker exec -ti php_fpm_group_chat_app bash`
 9. run `composer install`
 10. run `php bin/console secrets:generate-key` for generating an application secret key
-11. You should see some test data returned in the response of http://localhost:8080/api/test
+11. You should see some test data returned in the response of http://localhost/api/test
+12. To be able to handle websocket connections, enter the container with `docker exec -ti php_fpm_group_chat_app bash` and run `php bin/console web-socket:start` there
+13. You can connect to the chat app websocket server at http://localhost/ws
