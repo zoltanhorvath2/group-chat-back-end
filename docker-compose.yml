@@ -9,6 +9,8 @@ services:
       - "80:80"
     networks:
       - group_chat_app
+    depends_on:
+      - php_fpm
   php_fpm:
     build:
       context: docker
